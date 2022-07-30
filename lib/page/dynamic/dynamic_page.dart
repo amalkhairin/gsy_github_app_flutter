@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/utils/event_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_event_item.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_new_load_widget.dart';
+import 'package:linux_system_info/linux_system_info.dart';
 import 'package:redux/redux.dart';
 
 /**
@@ -15,7 +16,7 @@ import 'package:redux/redux.dart';
  * Date: 2018-07-16
  */
 class DynamicPage extends StatefulWidget {
-  DynamicPage({Key? super.key});
+  DynamicPage({Key? key}) : super(key: key);
 
   @override
   DynamicPageState createState() => DynamicPageState();
@@ -81,6 +82,7 @@ class DynamicPageState extends State<DynamicPage>
   }
 
   _renderEventItem(Event e) {
+     
     EventViewModel eventViewModel = EventViewModel.fromEventMap(e);
     return new GSYEventItem(
       eventViewModel,
@@ -99,7 +101,7 @@ class DynamicPageState extends State<DynamicPage>
     super.initState();
 
     ///监听生命周期，主要判断页面 resumed 的时候触发刷新
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
 
     ///获取网络端新版信息
     ReposDao.getNewsVersion(context, false);
@@ -136,7 +138,7 @@ class DynamicPageState extends State<DynamicPage>
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     dynamicBloc.dispose();
     super.dispose();
   }

@@ -6,6 +6,8 @@ import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
+import 'package:gsy_github_app_flutter/page/data_logic.dart';
+import 'package:gsy_github_app_flutter/page/home/widget/drawer_menu_tile.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/login_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -101,125 +103,7 @@ class HomeDrawer extends StatelessWidget {
                             color: store.state.themeData!.primaryColor,
                           ),
                         ),
-                        new ListTile(
-                            title: new Text(
-                              GSYLocalizations.i18n(context)!.home_reply,
-                              style: GSYConstant.normalText,
-                            ),
-                            onTap: () {
-                              String content = "";
-                              CommonUtils.showEditDialog(
-                                  context,
-                                  GSYLocalizations.i18n(context)!.home_reply,
-                                  (title) {}, (res) {
-                                content = res;
-                              }, () {
-                                if (content.length == 0) {
-                                  return;
-                                }
-                                CommonUtils.showLoadingDialog(context);
-                                IssueDao.createIssueDao(
-                                    "CarGuo", "gsy_github_app_flutter", {
-                                  "title":
-                                      GSYLocalizations.i18n(context)!.home_reply,
-                                  "body": content
-                                }).then((result) {
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                });
-                              },
-                                  titleController: new TextEditingController(),
-                                  valueController: new TextEditingController(),
-                                  needTitle: false);
-                            }),
-                        new ListTile(
-                            title: new Text(
-                              GSYLocalizations.i18n(context)!.home_history,
-                              style: GSYConstant.normalText,
-                            ),
-                            onTap: () {
-                              NavigatorUtils.gotoCommonList(
-                                  context,
-                                  GSYLocalizations.i18n(context)!.home_history,
-                                  "repositoryql",
-                                  "history",
-                                  userName: "",
-                                  reposName: "");
-                            }),
-                        new ListTile(
-                            title: new Hero(
-                                tag: "home_user_info",
-                                child: new Material(
-                                    color: Colors.transparent,
-                                    child: new Text(
-                                      GSYLocalizations.i18n(context)!
-                                          .home_user_info,
-                                      style: GSYConstant.normalTextBold,
-                                    ))),
-                            onTap: () {
-                              NavigatorUtils.gotoUserProfileInfo(context);
-                            }),
-                        new ListTile(
-                            title: new Text(
-                              GSYLocalizations.i18n(context)!.home_change_theme,
-                              style: GSYConstant.normalText,
-                            ),
-                            onTap: () {
-                              showThemeDialog(context, store);
-                            }),
-                        new ListTile(
-                            title: new Text(
-                              GSYLocalizations.i18n(context)!
-                                  .home_change_language,
-                              style: GSYConstant.normalText,
-                            ),
-                            onTap: () {
-                              CommonUtils.showLanguageDialog(context);
-                            }),
-
-                        new ListTile(
-                            title: new Text(
-                              GSYLocalizations.i18n(context)!
-                                  .home_change_grey,
-                              style: GSYConstant.normalText,
-                            ),
-                            onTap: () {
-                              CommonUtils.changeGrey(store);
-                            }),
-                        new ListTile(
-                            title: new Text(
-                              GSYLocalizations.i18n(context)!.home_check_update,
-                              style: GSYConstant.normalText,
-                            ),
-                            onTap: () {
-                              ReposDao.getNewsVersion(context, true);
-                            }),
-                        new ListTile(
-                            title: new Text(
-                              GSYLocalizations.of(context)!
-                                  .currentLocalized!
-                                  .home_about,
-                              style: GSYConstant.normalText,
-                            ),
-                            onLongPress: (){
-                              NavigatorUtils.goDebugDataPage(context);
-                            },
-                            onTap: () {
-                              PackageInfo.fromPlatform().then((value) {
-                                print(value);
-                                showAboutDialog(context, value.version);
-                              });
-                            }),
-                        new ListTile(
-                            title: new GSYFlexButton(
-                              text: GSYLocalizations.i18n(context)!.Login_out,
-                              color: Colors.redAccent,
-                              textColor: GSYColors.textWhite,
-                              onPress: () {
-                                store.dispatch(LogoutAction(context));
-                              },
-                            ),
-                            onTap: () {}),
+                        ..._drawerTile(context, store),
                       ],
                     ),
                   ),
@@ -230,5 +114,117 @@ class HomeDrawer extends StatelessWidget {
         },
       ),
     );
+  }
+
+  _drawerTile(context, store){
+    return [
+      new DrawerMenuTile().build(
+          title: new Text(
+            GSYLocalizations.i18n(context)!.home_reply,
+            style: GSYConstant.normalText,
+          ),
+          onTap: () {
+            String content = "";
+            CommonUtils.showEditDialog(
+                context, GSYLocalizations.i18n(context)!.home_reply, (title) {},
+                (res) {
+              content = res;
+            }, () {
+              if (content.length == 0) {
+                return;
+              }
+              CommonUtils.showLoadingDialog(context);
+              IssueDao.createIssueDao("CarGuo", "gsy_github_app_flutter", {
+                "title": GSYLocalizations.i18n(context)!.home_reply,
+                "body": content
+              }).then((result) {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              });
+            },
+                titleController: new TextEditingController(),
+                valueController: new TextEditingController(),
+                needTitle: false);
+          }),
+      new DrawerMenuTile().build(
+          title: new Text(
+            GSYLocalizations.i18n(context)!.home_history,
+            style: GSYConstant.normalText,
+          ),
+          onTap: () {
+            NavigatorUtils.gotoCommonList(
+                context,
+                GSYLocalizations.i18n(context)!.home_history,
+                "repositoryql",
+                DataHistory(),
+                userName: "",
+                reposName: "");
+          }),
+      new DrawerMenuTile().build(
+          title: new Hero(
+              tag: "home_user_info",
+              child: new Material(
+                  color: Colors.transparent,
+                  child: new Text(
+                    GSYLocalizations.i18n(context)!.home_user_info,
+                    style: GSYConstant.normalTextBold,
+                  ))),
+          onTap: () {
+            NavigatorUtils.gotoUserProfileInfo(context);
+          }),
+      new DrawerMenuTile().build(
+          title: new Text(
+            GSYLocalizations.i18n(context)!.home_change_theme,
+            style: GSYConstant.normalText,
+          ),
+          onTap: () {
+            showThemeDialog(context, store);
+          }),
+      new DrawerMenuTile().build(
+          title: new Text(
+            GSYLocalizations.i18n(context)!.home_change_language,
+            style: GSYConstant.normalText,
+          ),
+          onTap: () {
+            CommonUtils.showLanguageDialog(context);
+          }),
+      new DrawerMenuTile().build(
+          title: new Text(
+            GSYLocalizations.i18n(context)!.home_change_grey,
+            style: GSYConstant.normalText,
+          ),
+          onTap: () {
+            CommonUtils.changeGrey(store);
+          }),
+      new DrawerMenuTile().build(
+          title: new Text(
+            GSYLocalizations.i18n(context)!.home_check_update,
+            style: GSYConstant.normalText,
+          ),
+          onTap: () {
+            ReposDao.getNewsVersion(context, true);
+          }),
+      new DrawerMenuTile().build(
+          title: new Text(
+            GSYLocalizations.of(context)!.currentLocalized!.home_about,
+            style: GSYConstant.normalText,
+          ),
+          onTap: () {
+            PackageInfo.fromPlatform().then((value) {
+              print(value);
+              showAboutDialog(context, value.version);
+            });
+          }),
+      new DrawerMenuTile().build(
+          title: new GSYFlexButton(
+            text: GSYLocalizations.i18n(context)!.Login_out,
+            color: Colors.redAccent,
+            textColor: GSYColors.textWhite,
+            onPress: () {
+              store.dispatch(LogoutAction(context));
+            },
+          ),
+          onTap: () {}),
+    ];
   }
 }

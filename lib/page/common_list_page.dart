@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
+import 'package:gsy_github_app_flutter/page/data_logic.dart';
 import 'package:gsy_github_app_flutter/widget/state/gsy_list_state.dart';
 import 'package:gsy_github_app_flutter/widget/pull/gsy_pull_load_widget.dart';
 import 'package:gsy_github_app_flutter/page/repos/widget/repos_item.dart';
@@ -20,7 +21,7 @@ class CommonListPage extends StatefulWidget {
 
   final String showType;
 
-  final String dataType;
+  final DataLogic? dataType;
 
   final String? title;
 
@@ -73,48 +74,7 @@ class _CommonListPageState extends State<CommonListPage>
   }
 
   _getDataLogic() async {
-    switch (widget.dataType) {
-      case 'follower':
-        return await UserDao.getFollowerListDao(widget.userName, page,
-            needDb: page <= 1);
-      case 'followed':
-        return await UserDao.getFollowedListDao(widget.userName, page,
-            needDb: page <= 1);
-      case 'user_repos':
-        return await ReposDao.getUserRepositoryDao(widget.userName, page, null,
-            needDb: page <= 1);
-      case 'user_star':
-        return await ReposDao.getStarRepositoryDao(widget.userName, page, null,
-            needDb: page <= 1);
-      case 'repo_star':
-        return await ReposDao.getRepositoryStarDao(
-            widget.userName, widget.reposName, page,
-            needDb: page <= 1);
-      case 'repo_watcher':
-        return await ReposDao.getRepositoryWatcherDao(
-            widget.userName, widget.reposName, page,
-            needDb: page <= 1);
-      case 'repo_fork':
-        return await ReposDao.getRepositoryForksDao(
-            widget.userName, widget.reposName, page,
-            needDb: page <= 1);
-      case 'repo_release':
-        return null;
-      case 'repo_tag':
-        return null;
-      case 'notify':
-        return null;
-      case 'history':
-        return await ReposDao.getHistoryDao(page);
-      case 'topics':
-        return await ReposDao.searchTopicRepositoryDao(widget.userName,
-            page: page);
-      case 'user_be_stared':
-        return null;
-      case 'user_orgs':
-        return await UserDao.getUserOrgsDao(widget.userName, page,
-            needDb: page <= 1);
-    }
+    return await widget.dataType!.getData(widget.userName, widget.reposName, page);
   }
 
   @override

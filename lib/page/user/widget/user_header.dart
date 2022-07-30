@@ -7,6 +7,7 @@ import 'package:gsy_github_app_flutter/model/UserOrg.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
+import 'package:gsy_github_app_flutter/page/data_logic.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_user_icon_widget.dart';
@@ -90,7 +91,7 @@ class UserHeaderItem extends StatelessWidget {
                     " " +
                     GSYLocalizations.i18n(context)!.user_orgs_title,
                 "org",
-                "user_orgs",
+                DataUserOrg(),
                 userName: userInfo.login);
           },
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -311,7 +312,7 @@ class UserHeaderBottom extends StatelessWidget {
               userInfo.public_repos,
               () {
                 NavigatorUtils.gotoCommonList(
-                    context, userInfo.login, "repository", "user_repos",
+                    context, userInfo.login, "repository", DataUserRepos(),
                     userName: userInfo.login);
               },
             ),
@@ -325,7 +326,7 @@ class UserHeaderBottom extends StatelessWidget {
               userInfo.followers,
               () {
                 NavigatorUtils.gotoCommonList(
-                    context, userInfo.login, "user", "follower",
+                    context, userInfo.login, "user", DataFollower(),
                     userName: userInfo.login);
               },
             ),
@@ -339,7 +340,7 @@ class UserHeaderBottom extends StatelessWidget {
               userInfo.following,
               () {
                 NavigatorUtils.gotoCommonList(
-                    context, userInfo.login, "user", "followed",
+                    context, userInfo.login, "user", DataFollowed(),
                     userName: userInfo.login);
               },
             ),
@@ -353,7 +354,7 @@ class UserHeaderBottom extends StatelessWidget {
               userInfo.starred,
               () {
                 NavigatorUtils.gotoCommonList(
-                    context, userInfo.login, "repository", "user_star",
+                    context, userInfo.login, "repository", DataUserStar(),
                     userName: userInfo.login);
               },
             ),

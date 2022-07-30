@@ -6,6 +6,7 @@ import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/model/RepositoryQL.dart';
+import 'package:gsy_github_app_flutter/page/data_logic.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_icon_text.dart';
 
@@ -62,7 +63,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
             ? layoutLastTopicKey
             : null,
         onPressed: () {
-          NavigatorUtils.gotoCommonList(context, item, "repository", "topics",
+          NavigatorUtils.gotoCommonList(context, item, "repository", DataTopics(),
               userName: item, reposName: "");
         },
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -255,7 +256,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                     context,
                     widget.reposHeaderViewModel.repositoryName,
                     "user",
-                    "repo_star",
+                    DataRepoStar(),
                     userName: widget.reposHeaderViewModel.ownerName,
                     reposName: widget.reposHeaderViewModel.repositoryName);
               },
@@ -280,7 +281,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                     context,
                     widget.reposHeaderViewModel.repositoryName,
                     "repository",
-                    "repo_fork",
+                    DataRepoFork(),
                     userName: widget.reposHeaderViewModel.ownerName,
                     reposName: widget.reposHeaderViewModel.repositoryName);
               },
@@ -305,7 +306,7 @@ class _ReposHeaderItemState extends State<ReposHeaderItem> {
                     context,
                     widget.reposHeaderViewModel.repositoryName,
                     "user",
-                    "repo_watcher",
+                    DataRepoWatcher(),
                     userName: widget.reposHeaderViewModel.ownerName,
                     reposName: widget.reposHeaderViewModel.repositoryName);
               },
