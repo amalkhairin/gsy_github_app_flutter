@@ -23,19 +23,6 @@ class PhotoViewPage extends StatelessWidget {
         floatingActionButton: new FloatingActionButton(
           child: new Icon(Icons.file_download),
           onPressed: () {
-            /* CommonUtils.saveImage(url).then((res) {
-              if (res != null) {
-                Fluttertoast.showToast(msg: res);
-                if (Platform.isAndroid) {
-                  const updateAlbum = const MethodChannel(
-                      'com.shuyu.gsygithub.gsygithubflutter/UpdateAlbumPlugin');
-                  updateAlbum.invokeMethod('updateAlbum', {
-                    'path': res,
-                    'name': CommonUtils.splitFileNameByPath(res)
-                  });
-                }
-              }
-            });*/
           },
         ),
         appBar: new AppBar(

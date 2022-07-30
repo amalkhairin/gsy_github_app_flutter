@@ -14,6 +14,7 @@ import 'package:gsy_github_app_flutter/widget/animated_background.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_flex_button.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_input_widget.dart';
 import 'package:gsy_github_app_flutter/widget/particle/particle_widget.dart';
+import 'package:linux_system_info/linux_system_info.dart';
 
 /**
  * 登录页
@@ -32,7 +33,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> with LoginBLoC {
   @override
   Widget build(BuildContext context) {
-    /// 触摸收起键盘
     return new GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -45,9 +45,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
             Positioned.fill(child: AnimatedBackground()),
             Positioned.fill(child: ParticlesWidget(30)),
             new Center(
-              ///防止overFlow的现象
               child: SafeArea(
-                ///同时弹出键盘不遮挡
                 child: SingleChildScrollView(
                   child: new Card(
                     elevation: 5.0,
@@ -186,16 +184,6 @@ mixin LoginBLoC on State<LoginPage> {
         gravity: ToastGravity.CENTER,
         toastLength: Toast.LENGTH_LONG);
     return;
-    // if (_userName == null || _userName.isEmpty) {
-    //   return;
-    // }
-    // if (_password == null || _password.isEmpty) {
-    //   return;
-    // }
-    //
-    // ///通过 redux 去执行登陆流程
-    // StoreProvider.of<GSYState>(context)
-    //     .dispatch(LoginAction(context, _userName, _password));
   }
 
   oauthLogin() async {
@@ -203,7 +191,6 @@ mixin LoginBLoC on State<LoginPage> {
         Address.getOAuthUrl(), "${GSYLocalizations.i18n(context)!.oauth_text}");
 
     if (code != null && code.length > 0) {
-      ///通过 redux 去执行登陆流程
       StoreProvider.of<GSYState>(context).dispatch(OAuthAction(context, code));
     }
   }

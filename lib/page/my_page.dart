@@ -15,7 +15,7 @@ import 'package:redux/redux.dart';
  * Date: 2018-07-16
  */
 class MyPage extends StatefulWidget {
-  MyPage({Key? super.key});
+  MyPage({Key? key}) : super(key: key);
   @override
   MyPageState createState() => MyPageState();
 }
@@ -31,7 +31,7 @@ class MyPageState extends BasePersonState<MyPage> {
     return StoreProvider.of(context);
   }
 
-  ///从全局状态中获取我的用户名
+
   _getUserName() {
     if (_getStore()?.state.userInfo == null) {
       return null;
@@ -39,7 +39,7 @@ class MyPageState extends BasePersonState<MyPage> {
     return _getStore()?.state.userInfo?.login;
   }
 
-  ///从全局状态中获取我的用户类型
+
   getUserType() {
     if (_getStore()?.state.userInfo == null) {
       return null;
@@ -47,7 +47,6 @@ class MyPageState extends BasePersonState<MyPage> {
     return _getStore()?.state.userInfo?.type;
   }
 
-  ///更新通知图标颜色
   _refreshNotify() {
     UserDao.getNotifyDao(false, false, 0).then((res) {
       Color newColor;
@@ -101,21 +100,10 @@ class MyPageState extends BasePersonState<MyPage> {
   @override
   requestRefresh() async {
     if (_getUserName() != null) {
-      /*UserDao.getUserInfo(null).then((res) {
-        if (res != null && res.result) {
-          _getStore()?.dispatch(UpdateUserAction(res.data));
-          //todo getUserOrg(_getUserName());
-        }
-      });*/
 
-      ///通过 redux 提交更新用户数据行为
-      ///触发网络请求更新
       _getStore()?.dispatch(FetchUserAction());
 
-      ///获取用户组织信息
       getUserOrg(_getUserName());
-
-      ///获取用户仓库前100个star统计数据
       getHonor(_getUserName());
       _refreshNotify();
     }
@@ -143,7 +131,7 @@ class MyPageState extends BasePersonState<MyPage> {
 
   @override
   Widget build(BuildContext context) {
-    super.build(context); // See AutomaticKeepAliveClientMixin.
+    super.build(context);
     return new StoreBuilder<GSYState>(
       builder: (context, store) {
         return GSYNestedPullLoadWidget(
