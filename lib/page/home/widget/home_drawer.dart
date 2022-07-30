@@ -6,6 +6,7 @@ import 'package:gsy_github_app_flutter/common/dao/repos_dao.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
+import 'package:gsy_github_app_flutter/page/home/widget/drawer_menu_tile.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/login_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -101,7 +102,7 @@ class HomeDrawer extends StatelessWidget {
                             color: store.state.themeData!.primaryColor,
                           ),
                         ),
-                        new ListTile(
+                        new DrawerMenuTile().build(
                             title: new Text(
                               GSYLocalizations.i18n(context)!.home_reply,
                               style: GSYConstant.normalText,
@@ -120,8 +121,8 @@ class HomeDrawer extends StatelessWidget {
                                 CommonUtils.showLoadingDialog(context);
                                 IssueDao.createIssueDao(
                                     "CarGuo", "gsy_github_app_flutter", {
-                                  "title":
-                                      GSYLocalizations.i18n(context)!.home_reply,
+                                  "title": GSYLocalizations.i18n(context)!
+                                      .home_reply,
                                   "body": content
                                 }).then((result) {
                                   Navigator.pop(context);
@@ -132,7 +133,7 @@ class HomeDrawer extends StatelessWidget {
                                   valueController: new TextEditingController(),
                                   needTitle: false);
                             }),
-                        new ListTile(
+                        new DrawerMenuTile().build(
                             title: new Text(
                               GSYLocalizations.i18n(context)!.home_history,
                               style: GSYConstant.normalText,
@@ -146,7 +147,7 @@ class HomeDrawer extends StatelessWidget {
                                   userName: "",
                                   reposName: "");
                             }),
-                        new ListTile(
+                        new DrawerMenuTile().build(
                             title: new Hero(
                                 tag: "home_user_info",
                                 child: new Material(
@@ -159,7 +160,7 @@ class HomeDrawer extends StatelessWidget {
                             onTap: () {
                               NavigatorUtils.gotoUserProfileInfo(context);
                             }),
-                        new ListTile(
+                        new DrawerMenuTile().build(
                             title: new Text(
                               GSYLocalizations.i18n(context)!.home_change_theme,
                               style: GSYConstant.normalText,
@@ -167,7 +168,7 @@ class HomeDrawer extends StatelessWidget {
                             onTap: () {
                               showThemeDialog(context, store);
                             }),
-                        new ListTile(
+                        new DrawerMenuTile().build(
                             title: new Text(
                               GSYLocalizations.i18n(context)!
                                   .home_change_language,
@@ -176,17 +177,15 @@ class HomeDrawer extends StatelessWidget {
                             onTap: () {
                               CommonUtils.showLanguageDialog(context);
                             }),
-
-                        new ListTile(
+                        new DrawerMenuTile().build(
                             title: new Text(
-                              GSYLocalizations.i18n(context)!
-                                  .home_change_grey,
+                              GSYLocalizations.i18n(context)!.home_change_grey,
                               style: GSYConstant.normalText,
                             ),
                             onTap: () {
                               CommonUtils.changeGrey(store);
                             }),
-                        new ListTile(
+                        new DrawerMenuTile().build(
                             title: new Text(
                               GSYLocalizations.i18n(context)!.home_check_update,
                               style: GSYConstant.normalText,
@@ -194,23 +193,20 @@ class HomeDrawer extends StatelessWidget {
                             onTap: () {
                               ReposDao.getNewsVersion(context, true);
                             }),
-                        new ListTile(
+                        new DrawerMenuTile().build(
                             title: new Text(
                               GSYLocalizations.of(context)!
                                   .currentLocalized!
                                   .home_about,
                               style: GSYConstant.normalText,
                             ),
-                            onLongPress: (){
-                              NavigatorUtils.goDebugDataPage(context);
-                            },
                             onTap: () {
                               PackageInfo.fromPlatform().then((value) {
                                 print(value);
                                 showAboutDialog(context, value.version);
                               });
                             }),
-                        new ListTile(
+                        new DrawerMenuTile().build(
                             title: new GSYFlexButton(
                               text: GSYLocalizations.i18n(context)!.Login_out,
                               color: Colors.redAccent,

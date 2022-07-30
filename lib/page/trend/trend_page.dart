@@ -5,15 +5,14 @@ import 'package:gsy_github_app_flutter/page/repos/repository_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_bloc.dart';
 import 'package:gsy_github_app_flutter/model/TrendingRepoModel.dart';
+import 'package:gsy_github_app_flutter/page/trend/trend_header.dart';
 import 'package:gsy_github_app_flutter/page/trend/trend_user_page.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
-import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_sliver_header_delegate.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/page/repos/widget/repos_item.dart';
@@ -26,7 +25,7 @@ import 'package:redux/redux.dart';
  * Date: 2018-07-16
  */
 class TrendPage extends StatefulWidget {
-  TrendPage({Key? super.key});
+  TrendPage({Key? key}) : super(key: key);
 
   @override
   TrendPageState createState() => TrendPageState();
@@ -101,87 +100,19 @@ class TrendPageState extends State<TrendPage>
     }
     var trendTimeList = trendTime(context);
     var trendTypeList = trendType(context);
-    return new GSYCardItem(
-      color: store.state.themeData!.primaryColor,
-      margin: EdgeInsets.all(0.0),
-      shape: new RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(radius),
-      ),
-      child: new Padding(
-        padding:
-            new EdgeInsets.only(left: 0.0, top: 5.0, right: 0.0, bottom: 5.0),
-        child: new Row(
-          children: <Widget>[
-            _renderHeaderPopItem(selectTime!.name, trendTimeList,
-                (TrendTypeModel result) {
-              if (trendBloc.isLoading) {
-                Fluttertoast.showToast(
-                    msg: GSYLocalizations.i18n(context)!.loading_text);
-                return;
-              }
-              scrollController
-                  .animateTo(0,
-                      duration: Duration(milliseconds: 200),
-                      curve: Curves.bounceInOut)
-                  .then((_) {
-                setState(() {
-                  selectTime = result;
-                  selectTimeIndex = trendTimeList.indexOf(result);
-                });
-                _showRefreshLoading();
-              });
-            }),
-            new Container(height: 10.0, width: 0.5, color: GSYColors.white),
-            _renderHeaderPopItem(selectType!.name, trendTypeList,
-                (TrendTypeModel result) {
-              if (trendBloc.isLoading) {
-                Fluttertoast.showToast(
-                    msg: GSYLocalizations.i18n(context)!.loading_text);
-                return;
-              }
-              scrollController
-                  .animateTo(0,
-                      duration: Duration(milliseconds: 200),
-                      curve: Curves.bounceInOut)
-                  .then((_) {
-                setState(() {
-                  selectType = result;
-                  selectTypeIndex = trendTypeList.indexOf(result);
-                });
-                _showRefreshLoading();
-              });
-            }),
-          ],
-        ),
-      ),
+    return TrendHeader(
+      store: store,
+      radius: radius,
+      selectTime: selectTime,
+      selectType: selectType,
+      timeList: trendTimeList,
+      typeList: trendTypeList,
+      selectTimeIndex: selectTimeIndex,
+      selectTypeIndex: selectTypeIndex,
+      trendBloc: trendBloc,
+      scrollController: scrollController,
+      refreshIndicatorKey: refreshIndicatorKey,
     );
-  }
-
-  ///或者头部可选弹出item容器
-  _renderHeaderPopItem(String data, List<TrendTypeModel> list,
-      PopupMenuItemSelected<TrendTypeModel> onSelected) {
-    return new Expanded(
-      child: new PopupMenuButton<TrendTypeModel>(
-        child: new Center(
-            child: new Text(data, style: GSYConstant.middleTextWhite)),
-        onSelected: onSelected,
-        itemBuilder: (BuildContext context) {
-          return _renderHeaderPopItemChild(list);
-        },
-      ),
-    );
-  }
-
-  ///或者头部可选弹出item
-  _renderHeaderPopItemChild(List<TrendTypeModel> data) {
-    List<PopupMenuEntry<TrendTypeModel>> list = [];
-    for (TrendTypeModel item in data) {
-      list.add(PopupMenuItem<TrendTypeModel>(
-        value: item,
-        child: new Text(item.name),
-      ));
-    }
-    return list;
   }
 
   Future<void> requestRefresh() async {
@@ -214,8 +145,8 @@ class TrendPageState extends State<TrendPage>
   ///空页面
   Widget _buildEmpty() {
     var statusBar =
-        MediaQueryData.fromWindow(WidgetsBinding.instance.window).padding.top;
-    var bottomArea = MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+        MediaQueryData.fromWindow(WidgetsBinding.instance!.window).padding.top;
+    var bottomArea = MediaQueryData.fromWindow(WidgetsBinding.instance!.window)
         .padding
         .bottom;
     var height = MediaQuery.of(context).size.height -
@@ -250,6 +181,7 @@ class TrendPageState extends State<TrendPage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
+     
     return new StoreBuilder<GSYState>(
       builder: (context, store) {
         return new Scaffold(

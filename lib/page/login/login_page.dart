@@ -14,6 +14,7 @@ import 'package:gsy_github_app_flutter/widget/animated_background.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_flex_button.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_input_widget.dart';
 import 'package:gsy_github_app_flutter/widget/particle/particle_widget.dart';
+import 'package:linux_system_info/linux_system_info.dart';
 
 /**
  * 登录页
@@ -32,6 +33,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> with LoginBLoC {
   @override
   Widget build(BuildContext context) {
+    // var cpu_usage = CpuInfo.getCpuUsagePercentage();
+    // print("cpu usage: ${cpu_usage.listen((event) => event)}");
     /// 触摸收起键盘
     return new GestureDetector(
       behavior: HitTestBehavior.translucent,

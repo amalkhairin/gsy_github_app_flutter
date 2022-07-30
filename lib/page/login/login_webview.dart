@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
+import 'package:linux_system_info/linux_system_info.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 
@@ -51,6 +52,8 @@ class _LoginWebViewState extends State<LoginWebView> {
 
   @override
   Widget build(BuildContext context) {
+    // var cpu_usage = CpuInfo.getCpuUsagePercentage();
+    // print("cpu usage: ${cpu_usage.listen((event) => event)}");
     return Scaffold(
       appBar: new AppBar(
         title: _renderTitle(),
