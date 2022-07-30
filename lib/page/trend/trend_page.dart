@@ -17,6 +17,7 @@ import 'package:gsy_github_app_flutter/widget/gsy_card_item.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_sliver_header_delegate.dart';
 import 'package:gsy_github_app_flutter/widget/pull/nested/nested_refresh.dart';
 import 'package:gsy_github_app_flutter/page/repos/widget/repos_item.dart';
+import 'package:linux_system_info/linux_system_info.dart';
 import 'package:redux/redux.dart';
 
 /**
@@ -26,7 +27,7 @@ import 'package:redux/redux.dart';
  * Date: 2018-07-16
  */
 class TrendPage extends StatefulWidget {
-  TrendPage({Key? super.key});
+  TrendPage({Key? key}) : super(key: key);
 
   @override
   TrendPageState createState() => TrendPageState();
@@ -214,8 +215,8 @@ class TrendPageState extends State<TrendPage>
   ///空页面
   Widget _buildEmpty() {
     var statusBar =
-        MediaQueryData.fromWindow(WidgetsBinding.instance.window).padding.top;
-    var bottomArea = MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+        MediaQueryData.fromWindow(WidgetsBinding.instance!.window).padding.top;
+    var bottomArea = MediaQueryData.fromWindow(WidgetsBinding.instance!.window)
         .padding
         .bottom;
     var height = MediaQuery.of(context).size.height -
@@ -250,6 +251,7 @@ class TrendPageState extends State<TrendPage>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
+     
     return new StoreBuilder<GSYState>(
       builder: (context, store) {
         return new Scaffold(

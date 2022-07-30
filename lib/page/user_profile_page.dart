@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
+import 'package:gsy_github_app_flutter/page/user_profile_render_item.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
@@ -30,34 +31,6 @@ class UserProfileInfo extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfileInfo> {
-  _renderItem(
-      IconData leftIcon, String title, String value, VoidCallback onPressed) {
-    return new GSYCardItem(
-      child: new RawMaterialButton(
-        onPressed: onPressed,
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        padding: const EdgeInsets.all(15.0),
-        constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-        child: new Row(
-          children: <Widget>[
-            new Icon(leftIcon),
-            new Container(
-              width: 10.0,
-            ),
-            new Text(title, style: GSYConstant.normalSubText),
-            new Container(
-              width: 10.0,
-            ),
-            new Expanded(child: new Text(value, style: GSYConstant.normalText)),
-            new Container(
-              width: 10.0,
-            ),
-            new Icon(GSYICons.REPOS_ITEM_NEXT, size: 12.0),
-          ],
-        ),
-      ),
-    );
-  }
 
   _showEditDialog(String title, String? value, String key, Store store) {
     String content = value ?? "";
@@ -81,44 +54,14 @@ class _UserProfileState extends State<UserProfileInfo> {
         needTitle: false);
   }
 
-  List<Widget> _renderList(User userInfo, Store store) {
+  List<Widget> _renderList(User userInfo, store) {
     return [
-      _renderItem(Icons.info, GSYLocalizations.i18n(context)!.user_profile_name,
-          userInfo.name ?? "---", () {
-        _showEditDialog(GSYLocalizations.i18n(context)!.user_profile_name,
-            userInfo.name, "name", store);
-      }),
-      _renderItem(
-          Icons.email,
-          GSYLocalizations.i18n(context)!.user_profile_email,
-          userInfo.email ?? "---", () {
-        _showEditDialog(GSYLocalizations.i18n(context)!.user_profile_email,
-            userInfo.email, "email", store);
-      }),
-      _renderItem(Icons.link, GSYLocalizations.i18n(context)!.user_profile_link,
-          userInfo.blog ?? "---", () {
-        _showEditDialog(GSYLocalizations.i18n(context)!.user_profile_link,
-            userInfo.blog, "blog", store);
-      }),
-      _renderItem(Icons.group, GSYLocalizations.i18n(context)!.user_profile_org,
-          userInfo.company ?? "---", () {
-        _showEditDialog(GSYLocalizations.i18n(context)!.user_profile_org,
-            userInfo.company, "company", store);
-      }),
-      _renderItem(
-          Icons.location_on,
-          GSYLocalizations.i18n(context)!.user_profile_location,
-          userInfo.location ?? "---", () {
-        _showEditDialog(GSYLocalizations.i18n(context)!.user_profile_location,
-            userInfo.location, "location", store);
-      }),
-      _renderItem(
-          Icons.message,
-          GSYLocalizations.i18n(context)!.user_profile_info,
-          userInfo.bio ?? "---", () {
-        _showEditDialog(GSYLocalizations.i18n(context)!.user_profile_info,
-            userInfo.bio, "bio", store);
-      }),
+      ProfileNameItem(context).setItem(userInfo, store),
+      ProfileEmailItem(context).setItem(userInfo, store),
+      ProfileLinkItem(context).setItem(userInfo, store),
+      ProfileOrgItem(context).setItem(userInfo, store),
+      ProfileLocationItem(context).setItem(userInfo, store),
+      ProfileInfoItem(context).setItem(userInfo, store),
     ];
   }
 

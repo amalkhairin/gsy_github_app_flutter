@@ -13,6 +13,7 @@ import 'package:gsy_github_app_flutter/widget/pull/nested/gsy_nested_pull_load_w
 import 'package:gsy_github_app_flutter/page/user/base_person_state.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
+import 'package:linux_system_info/linux_system_info.dart';
 
 /**
  * 个人详情
@@ -24,7 +25,7 @@ class PersonPage extends StatefulWidget {
 
   final String? userName;
 
-  PersonPage(this.userName, {Key? super.key});
+  PersonPage(this.userName, {Key? key}) : super(key: key);
 
   @override
   _PersonState createState() => _PersonState(userName);
@@ -145,6 +146,7 @@ class _PersonState extends BasePersonState<PersonPage> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
+     
     return new Scaffold(
         appBar: new AppBar(
             title: GSYTitleBar(
